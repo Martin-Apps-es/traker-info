@@ -6,15 +6,15 @@
   <title>Registro de Accesos</title>
   <script>
     async function registrarAcceso() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxbNnYPZpIMv8NxHTBUMd4pSt7Rera4vXYFqirSnngx39JoEy63Ch6DYTVYNDG7Ua8Q/exec'; // Cambia esto por la URL de tu Apps Script
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxbNnYPZpIMv8NxHTBUMd4pSt7Rera4vXYFqirSnngx39JoEy63Ch6DYTVYNDG7Ua8Q/exec';
 
       try {
-        // Capturar dirección IP
+        // Obtener dirección IP
         const ipResponse = await fetch('https://api.ipify.org?format=json');
         const ipData = await ipResponse.json();
         const ip = ipData.ip;
 
-        // Información del navegador
+        // Obtener información del navegador
         const userAgent = navigator.userAgent;
 
         // Enviar datos al Apps Script
@@ -24,13 +24,17 @@
           body: JSON.stringify({
             ip: ip,
             userAgent: userAgent,
-            location: 'No disponible' // Cambia esto si quieres usar geolocalización
-          }),
-          mode: 'cors'
+            location: 'No disponible' // Puedes implementar geolocalización si lo deseas
+          })
         });
 
-        const result = await response.json();
-        console.log('Registro exitoso:', result);
+        // Verificar respuesta
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Registro exitoso:', result);
+        } else {
+          console.error('Error en el servidor:', response.statusText);
+        }
       } catch (error) {
         console.error('Error al registrar el acceso:', error);
       }
