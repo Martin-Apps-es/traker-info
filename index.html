@@ -1,51 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Accesos</title>
-  <script>
-    async function registrarAcceso() {
-      // URL de tu Apps Script
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxbNnYPZpIMv8NxHTBUMd4pSt7Rera4vXYFqirSnngx39JoEy63Ch6DYTVYNDG7Ua8Q/exec';
-
-      try {
-        // Obtener la dirección IP
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ip = ipData.ip;
-
-        // Información del navegador
-        const userAgent = navigator.userAgent;
-
-        // Ubicación (opcional, puedes mejorarla más tarde)
-        const location = 'No disponible';
-
-        // Construir la URL con los parámetros
-        const params = new URLSearchParams({
-          ip: ip,
-          userAgent: userAgent,
-          location: location
-        });
-
-        // Enviar los datos al Apps Script
-        const response = await fetch(`${scriptURL}?${params.toString()}`);
-        if (response.ok) {
-          console.log('Registro exitoso');
-        } else {
-          console.error('Error en la respuesta del servidor');
-        }
-      } catch (error) {
-        console.error('Error al registrar el acceso:', error);
-      }
-    }
-
-    // Ejecutar automáticamente al cargar la página
-    window.onload = registrarAcceso;
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Usuario</title>
 </head>
 <body>
-  <h1>Bienvenido v3</h1>
-  <p>Tu acceso ha sido registrado automáticamente.</p>
+    <h1>Datos del Usuario</h1>
+    <div id="user-data">
+        <p><strong>IP:</strong> <span id="ip"></span></p>
+        <p><strong>Ubicación:</strong> <span id="location"></span></p>
+        <p><strong>Sistema Operativo:</strong> <span id="os"></span></p>
+        <p><strong>Navegador:</strong> <span id="browser"></span></p>
+        <p><strong>Dimensiones del dispositivo:</strong> <span id="device-dimensions"></span></p>
+    </div>
+
+    <script>
+        // Obtener los datos del usuario
+        fetch('http://ip-api.com/json')
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar los datos en el HTML
+                document.getElementById('ip').textContent = data.query;
+                document.getElementById('location').textContent = `${data.city}, ${data.regionName}, ${data.country}`;
+                document.getElementById('os').textContent = navigator.platform;
+                document.getElementById('browser').textContent = navigator.userAgent;
+                document.getElementById('device-dimensions').textContent = `${window.innerWidth}x${window.innerHeight}`;
+            })
+            .catch(error => console.error('Error al obtener los datos del usuario:', error));
+    </script>
 </body>
 </html>
