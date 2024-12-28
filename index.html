@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Accesos</title>
+  <script>
+    async function registrarAcceso() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwcV-0y0igV6HvaI8_cylsTqvQan0sOd0KuB-QVx1Iofn8zJAeFRVGWwzUdacHXNblF/exec'
+
+      try {
+        // Capturar dirección IP
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+
+        // Información del navegador
+        const userAgent = navigator.userAgent;
+
+        // Enviar datos al Apps Script
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ip, userAgent, location: 'No disponible' }),
+        });
+
+        console.log(await response.json());
+      } catch (error) {
+        console.error('Error al registrar el acceso:', error);
+      }
+    }
+
+    // Ejecutar automáticamente al cargar la página
+    window.onload = registrarAcceso;
+  </script>
+</head>
+<body>
+  <h1>Bienvenido</h1>
+  <p>Tu acceso ha sido registrado automáticamente.</p>
+</body>
+</html>
