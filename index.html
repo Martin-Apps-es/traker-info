@@ -1,3 +1,6 @@
+https://script.google.com/macros/s/AKfycbyLhOfnaT5XTDnoK9sFrYUYDhPXewsHF95iHQ8fY_wHRg8g3frKjiDFTCUwQhwjJVyQ/exec
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +9,7 @@
   <title>Registro de Accesos</title>
   <script>
     async function registrarAcceso() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwcV-0y0igV6HvaI8_cylsTqvQan0sOd0KuB-QVx1Iofn8zJAeFRVGWwzUdacHXNblF/exec'
+      const scriptURL = 'URL_DE_TU_APLICACIÓN_WEB_DE_APPS_SCRIPT'; // Cambia esto por la URL de tu Apps Script
 
       try {
         // Capturar dirección IP
@@ -21,10 +24,16 @@
         const response = await fetch(scriptURL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ip, userAgent, location: 'No disponible' }),
+          body: JSON.stringify({
+            ip: ip,
+            userAgent: userAgent,
+            location: 'No disponible' // Cambia esto si quieres usar geolocalización
+          }),
+          mode: 'cors'
         });
 
-        console.log(await response.json());
+        const result = await response.json();
+        console.log('Registro exitoso:', result);
       } catch (error) {
         console.error('Error al registrar el acceso:', error);
       }
@@ -35,7 +44,7 @@
   </script>
 </head>
 <body>
-  <h1>Bienvenido</h1>
+  <h1>Bienvenido a la versión 2</h1>
   <p>Tu acceso ha sido registrado automáticamente.</p>
 </body>
 </html>
